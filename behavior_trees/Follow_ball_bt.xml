@@ -3,7 +3,10 @@
     <!-- ////////// -->
     <BehaviorTree ID="BehaviorTree">
         <ReactiveSequence>
-            <Action ID="Ifball"/>
+            <Fallback>
+                <Action ID="Ifball" name="IfBall"/>
+                <Action ID="Move"/>
+            </Fallback>
             <Action ID="Move"/>
         </ReactiveSequence>
     </BehaviorTree>
