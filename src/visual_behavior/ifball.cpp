@@ -33,7 +33,7 @@ ifball::ifball(const std::string& name, const BT::NodeConfiguration & config)
   typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy_fdp;
   message_filters::Synchronizer<MySyncPolicy_fdp> sync_fdp(MySyncPolicy_fdp(10), depth_sub_, hsvf_sub_);
 
-  sync_fdp.registerCallback(boost::bind(&callback_fdp, _1, _2));
+  sync_fdp.registerCallback(boost::bind(&visual_behavior::ifball::callback_fdp, _1, _2));
 }
 
 void
@@ -45,7 +45,7 @@ ifball::halt()
 void 
 ifball::callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& hsvfilt)
 {
-
+    int pos;
     cv_bridge::CvImagePtr img_ptr_depth;
 
     try{
@@ -72,18 +72,14 @@ ifball::callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs:
     }
 
     ball.depth = img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 0.001f;
-    std::cerr << "ball at (" << ball.depth << "in pixel" << ball.x << ball.y std::endl;
-  }
-
+    std::cerr << "ball at (" << ball.depth << "in pixel" << ball.x << ball.y << std::endl;
 }
 
 BT::NodeStatus
 ifball::tick()
 {   
-
-
-
-  setOutput("speed", )
+  
+  setOutput("speed")
   //std::string object = getInput<std::string>("object").value();
   ROS_INFO("ifball [%d]", detected);
 
@@ -104,8 +100,7 @@ ifball::tick()
   }
 }
 
-}  // namespace visual_behavior
-
+} // namespace visual_behavior
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {

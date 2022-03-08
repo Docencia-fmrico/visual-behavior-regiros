@@ -23,7 +23,6 @@
 #include <cv_bridge/cv_bridge.h>
 
 #include <sensor_msgs/Image.h>
-#include "cameras_cpp/nodo_camera.cpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 
@@ -45,8 +44,6 @@ class ifball : public BT::ActionNodeBase
 
     void callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& rgb);
 
-}
-
     static BT::PortsList providedPorts()
     {
         return { BT::InputPort<struct speeds>("speed")};
@@ -59,6 +56,7 @@ class ifball : public BT::ActionNodeBase
     struct speeds spd;
     struct objectinimage ball;
     bool detected;
+    int counter_;
    
 };
 

@@ -12,13 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-struct objectinimage{
-    int x;
-    int y;
-    float depth; 
-};
+#ifndef VISUAL_BEHAVIOR_STR_FOLLOWOBJ_H
+#define VISUAL_BEHAVIOR_STR_FOLLOWOBJ_H
 
-struct speeds{
-    double angular;
-    double linear;
-};
+namespace visual_behavior {
+
+    struct objectinimage{
+        int x;
+        int y;
+        float depth; 
+    };
+    
+    typedef struct objectinimage objectinimage;
+
+    struct speeds{
+        double angular;
+        double linear;
+    };
+
+    typedef struct speeds speeds;
+}
+#endif  // VISUAL_BEHAVIOR_STR_FOLLOWOBJ_H
