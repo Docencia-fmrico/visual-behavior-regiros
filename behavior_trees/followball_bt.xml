@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="BehaviorTree">
+        <ReactiveSequence>
+            <Fallback>
+                <Action ID="Ifball" name="IfBall" spd="{speed}"/>
+                <Action ID="Move" spd="{speed}"/>
+            </Fallback>
+            <Action ID="Move"/>
+        </ReactiveSequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="Ifball"/>
+        <Action ID="Move"/>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
+
