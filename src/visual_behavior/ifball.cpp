@@ -78,7 +78,6 @@ namespace visual_behavior
   }
 
 
-
   BT::NodeStatus
   ifball::tick()
   {   
@@ -105,8 +104,7 @@ namespace visual_behavior
     }
   }
 
-}  // namespace visual_behavior
-
+} // namespace visual_behavior
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {

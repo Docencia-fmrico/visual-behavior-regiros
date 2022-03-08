@@ -3,6 +3,14 @@ project(visual_behavior)
 
 set(CMAKE_CXX_STANDARD 17)
 
+#find_package(ZMQ)
+#if(ZMQ_FOUND)
+#    message(STATUS "ZeroMQ found.")
+#    add_definitions(-DZMQ_FOUND)
+#else()
+#  message(WARNING "ZeroMQ NOT found. Not including PublisherZMQ.")
+#endif()
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
@@ -11,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
   roslint
   cv_bridge
   geometry_msgs
+  behaviortree_cpp_v3
+  cameras_cpp
 )
 
 catkin_package(
@@ -20,6 +30,8 @@ CATKIN_DEPENDS
   kobuki_msgs 
   sensor_msgs 
   cv_bridge
+  behaviortree_cpp_v3
+  cameras_cpp
   geometry_msgs
 )
 
@@ -42,7 +54,8 @@ endforeach()
 add_executable(followball_node 
   src/followball_node
 )
-target_link_libraries(followball_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+target_link_libraries(followball_node ${catkin_LIBRARIES} ${PROJECT_NAME} ${ZMQ_LIBRARIES})
+
 
 roslint_cpp(
  src/followball_node.cpp
