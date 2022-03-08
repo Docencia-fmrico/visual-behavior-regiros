@@ -4,8 +4,8 @@
     <BehaviorTree ID="BehaviorTree">
         <ReactiveSequence>
             <Fallback>
-                <Action ID="Ifball" name="IfBall"/>
-                <Action ID="Move"/>
+                <Action ID="Ifball" name="IfBall" spd="{speed}"/>
+                <Action ID="Move" spd="{speed}"/>
             </Fallback>
             <Action ID="Move"/>
         </ReactiveSequence>

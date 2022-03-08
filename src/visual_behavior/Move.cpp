@@ -1,5 +1,4 @@
-
-// Copyright 2019 Intelligent Robotics Lab
+// Copyright 2022 Intelligent Robotics Lab
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,31 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef VISUAL_BEHAVIOR_MOVE_H
-#define VISUAL_BEHAVIOR_MOVE_H
-
+#include "visual_behavior/Move.h"
 #include "ros/ros.h"
-#include "geometry_msgs/Twist.h"
 
 namespace visual_behavior
 {
 
-class Move
-{
-  public:
-  Move();
-
-  void go();
+  Move::Move()
+  {
+    pub_vel_ = n_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
+  }
   
-  private:
 
-    ros::NodeHandle nh_;
+  void Move::go()
+  {
+    geometry_msgs::Twist cmd;
 
-    struct speeds spd;
+    str_followobj::speeds spd = getInput<str_followobj::speeds>("speed").value();
 
-    ros::Publisher pub_vel_;
-};
+    cmd.linear.x = spd.linear;
+    cmd.angular.z = spd.angular;
 
-}  // namespace visual_behavior
+    pub_vel_.publish(cmd);
+    
+  }
 
-#endif  // VISUAL_BEHAVIOR_MOVE_H
+} // namespace visual_behavior
