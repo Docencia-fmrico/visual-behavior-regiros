@@ -1,5 +1,5 @@
 
-// Copyright 2019 Intelligent Robotics Lab
+// Copyright 2022 Regiros
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,44 +23,45 @@
 #include <cv_bridge/cv_bridge.h>
 
 #include <sensor_msgs/Image.h>
-#include "cameras_cpp/nodo_camera.cpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 
 #include "visual_behavior/str_followobj.h"
+#include "visual_behavior/PIDController.hpp"
 
 #include "ros/ros.h"
 
 namespace visual_behavior
 {
 
-class ifball : public BT::ActionNodeBase
-{
-  public:
-    explicit ifball(const std::string& name, const BT::NodeConfiguration& config);
+  class ifball : public BT::ActionNodeBase  
+  {
+    public:
+      explicit ifball(const std::string& name, const BT::NodeConfiguration& config);
 
-    void halt();
+      void halt();
 
-    BT::NodeStatus tick();
+      BT::NodeStatus tick();
 
-    void callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& rgb);
+      void callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& rgb);
 
-}
+      static BT::PortsList providedPorts()
+      {
+       return { BT::OutputPort<struct speeds>("speed")};
+      }
 
-    static BT::PortsList providedPorts()
-    {
-        return { BT::InputPort<struct speeds>("speed")};
-    }
-
-  private:
-    ros::NodeHandle nh_;
-    ros::Subscriber depth_sub_;
-    ros::Subscriber hsvf_sub_;
-    struct speeds spd;
-    struct objectinimage ball;
-    bool detected;
-   
-};
+    private:
+      ros::NodeHandle nh_;
+      ros::Subscriber depth_sub_;
+      ros::Subscriber hsvf_sub_;
+      struct speeds spd;
+      struct objectinimage ball;
+      bool detected;
+      visual_behavior::PIDController linear_pid_;
+      visual_behavior::PIDController angular_pid_;
+      const double ideal_depth_ = 1.0;
+      const double ideal_x_ = 320;  
+  };
 
 }  // namespace visual_behavior
 
