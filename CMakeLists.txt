@@ -66,7 +66,7 @@ endforeach()
 add_executable(followball_node 
   src/followball_node
 )
-target_link_libraries(followball_node ${catkin_LIBRARIES} ${PROJECT_NAME} ${ZMQ_LIBRARIES})
+target_link_libraries(followball_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES})
 
 
 roslint_cpp(

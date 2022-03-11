@@ -26,15 +26,18 @@ namespace visual_behavior
 {
 
   ifball::ifball(const std::string& name, const BT::NodeConfiguration & config)
-  : BT::ActionNodeBase(name, config), linear_pid_(0.0, 2.0, 0.0, 0.3), angular_pid_(0.0, 3.20, 0.0, 0.8)
+  : BT::ActionNodeBase(name, config),
+    linear_pid_(0.0, 2.0, 0.0, 0.3),
+    angular_pid_(0.0, 3.20, 0.0, 0.8),
+    nh_(),
+    depth_sub_(nh_, "/camera/depth/image_raw", 1),
+    hsvf_sub_(nh_, "/hsv/image_filtered", 1)
   {
-    message_filters::Subscriber<sensor_msgs::Image> depth_sub_(nh_, "/camera/depth/image_raw", 1);
-    message_filters::Subscriber<sensor_msgs::Image> hsvf_sub_(nh_, "/hsv/image_filtered", 1);
 
     typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy_fdp;
     message_filters::Synchronizer<MySyncPolicy_fdp> sync_fdp(MySyncPolicy_fdp(10), depth_sub_, hsvf_sub_);
 
-    sync_fdp.registerCallback(boost::bind(&visual_behavior::ifball::callback_fdp, _1, _2));
+    sync_fdp.registerCallback(boost::bind(&ifball::callback_fdp, this, _1, _2));
   }
 
   void
