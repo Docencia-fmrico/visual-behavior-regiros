@@ -52,8 +52,10 @@ namespace visual_behavior
 
     private:
       ros::NodeHandle nh_;
-      ros::Subscriber depth_sub_;
-      ros::Subscriber hsvf_sub_;
+
+      message_filters::Subscriber<sensor_msgs::Image> depth_sub_;
+      message_filters::Subscriber<sensor_msgs::Image> hsvf_sub_;
+
       struct speeds spd;
       struct objectinimage ball;
       bool detected;
