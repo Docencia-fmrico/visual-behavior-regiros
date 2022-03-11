@@ -4,8 +4,11 @@
     <BehaviorTree ID="BehaviorTree">
         <ReactiveSequence>
             <Fallback>
-                <Action ID="IfPerson"/>
-                <Action ID="Move"/>
+                <ReactiveFallback>
+                    <Action ID="Ifball"/>
+                    <Action ID="IfPerson"/>
+                </ReactiveFallback>
+                <Action ID="Move" name="Seek"/>
             </Fallback>
             <Action ID="Move"/>
         </ReactiveSequence>
