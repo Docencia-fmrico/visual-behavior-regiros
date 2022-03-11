@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   behaviortree_cpp_v3
   cameras_cpp
+  message_filters
 )
 
 catkin_package(
@@ -33,6 +34,12 @@ CATKIN_DEPENDS
   behaviortree_cpp_v3
   cameras_cpp
   geometry_msgs
+  message_filters
+)
+
+add_library(${PROJECT_NAME}
+  src/visual_behavior/ifball.cpp
+  src/visual_behavior/PIDController.cpp
 )
 
 include_directories(
@@ -40,6 +47,11 @@ include_directories(
   ${ZMQ_INCLUDE_DIRS}
   include
 )
+
+find_package(OpenCV)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
+
 
 add_library(asr_ifball_bt_node SHARED src/visual_behavior/ifball.cpp)
 list(APPEND plugin_libs
