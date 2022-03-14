@@ -19,29 +19,36 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 #include "visual_behavior/str_followobj.h"
+#include "behaviortree_cpp_v3/behavior_tree.h"
+#include "behaviortree_cpp_v3/bt_factory.h"
+
 
 namespace visual_behavior
 {
 
-class Move
+class Move : public BT::ActionNodeBase
 {
   public:
-  Move();
+  Move(const std::string& name, const BT::NodeConfiguration& config);
 
-  void go();
+  void halt();
+
+  BT::NodeStatus tick();
 
   static BT::PortsList providedPorts()
   {
-    return { BT::InputPort<str_followobj::speeds>("speed")};
+    return { BT::InputPort<struct speeds>("speed")};
   }
 
   private:
 
     ros::NodeHandle nh_;
 
-    struct speeds spd;
+    struct speeds speed;
 
     ros::Publisher pub_vel_;
+
+    int counter_;
 };
 
 }  // namespace visual_behavior

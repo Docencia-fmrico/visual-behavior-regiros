@@ -37,11 +37,6 @@ CATKIN_DEPENDS
   message_filters
 )
 
-add_library(${PROJECT_NAME}
-  src/visual_behavior/ifball.cpp
-  src/visual_behavior/PIDController.cpp
-)
-
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${ZMQ_INCLUDE_DIRS}
@@ -51,11 +46,13 @@ include_directories(
 find_package(OpenCV)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-
+add_library(visual_behavior src/visual_behavior/PIDController.cpp)
 
 add_library(asr_ifball_bt_node SHARED src/visual_behavior/ifball.cpp)
+add_library(asr_move_bt_node SHARED src/visual_behavior/Move.cpp)
 list(APPEND plugin_libs
   asr_ifball_bt_node
+  asr_move_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})
@@ -71,5 +68,7 @@ target_link_libraries(followball_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES})
 
 roslint_cpp(
  src/followball_node.cpp
+ include/visual_behavior/PIDController.hpp src/visual_behavior/PIDController.cpp
  include/visual_behavior/ifball.h src/visual_behavior/Ifball.cpp
+ include/visual_behavior/Move.h src/visual_behavior/Move.cpp
 )

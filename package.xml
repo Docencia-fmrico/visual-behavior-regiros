@@ -4,12 +4,12 @@
   <version>0.0.0</version>
   <description>The visual behavior package</description>
 
-  <maintainer email="fmrico@gmail.com">fmrico</maintainer>
+  <maintainer email="m.wiesenberg.2020@alumnos.urjc.es">mwiesenberg2020</maintainer>
 
   <license>Apache 2</license>
   <url type="website">https://www.aulavirtual.urjc.es/moodle/course/view.php?id=144699</url>
 
-  <author email="fmrico@gmail.com">Francisco Martín</author>
+  <author email="m.wiesenberg.2020@alumnos.urjc.es">mwiesenberg2020</author>
 
   <buildtool_depend>catkin</buildtool_depend>
  

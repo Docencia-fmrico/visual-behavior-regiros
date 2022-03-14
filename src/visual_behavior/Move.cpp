@@ -14,27 +14,52 @@
 
 #include "visual_behavior/Move.h"
 #include "ros/ros.h"
+#include "behaviortree_cpp_v3/behavior_tree.h"
+
+#include "geometry_msgs/Twist.h"
 
 namespace visual_behavior
 {
 
-  Move::Move()
-  {
-    pub_vel_ = n_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
-  }
+Move::Move(const std::string& name, const BT::NodeConfiguration& config)
+:BT::ActionNodeBase(name, config),counter_(0)
+{
+  pub_vel_ = nh_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
+}
   
+void
+Move::halt()
+{
+  ROS_INFO("MOVING");
+}
 
-  void Move::go()
+BT::NodeStatus
+Move::tick()
+{
+  speed = getInput<struct speeds>("speed").value();
+
+  if (counter_++ < 50)
   {
     geometry_msgs::Twist cmd;
-
-    str_followobj::speeds spd = getInput<str_followobj::speeds>("speed").value();
-
-    cmd.linear.x = spd.linear;
-    cmd.angular.z = spd.angular;
+    cmd.linear.x = speed.linear;
+    cmd.angular.z = speed.angular;
 
     pub_vel_.publish(cmd);
-    
+    return BT::NodeStatus::RUNNING;
   }
+  else
+  {
+    geometry_msgs::Twist cmd;
+    pub_vel_.publish(cmd);
+
+    return BT::NodeStatus::SUCCESS;
+  }
+}
 
 } // namespace visual_behavior
+
+#include "behaviortree_cpp_v3/bt_factory.h"
+BT_REGISTER_NODES(factory)
+{
+  factory.registerNodeType<visual_behavior::Move>("Move");
+}

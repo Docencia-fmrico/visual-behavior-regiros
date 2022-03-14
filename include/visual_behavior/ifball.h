@@ -55,7 +55,7 @@ namespace visual_behavior
       message_filters::Subscriber<sensor_msgs::Image> depth_sub_;
       message_filters::Subscriber<sensor_msgs::Image> hsvf_sub_;
 
-      struct speeds spd;
+      struct speeds speed;
       struct objectinimage ball;
       bool detected;
       visual_behavior::PIDController linear_pid_;

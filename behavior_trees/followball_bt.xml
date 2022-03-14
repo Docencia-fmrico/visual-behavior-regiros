@@ -4,10 +4,10 @@
     <BehaviorTree ID="BehaviorTree">
         <ReactiveSequence>
             <Fallback>
-                <Action ID="Ifball" name="IfBall" spd="{speed}"/>
-                <Action ID="Move" spd="{speed}"/>
+                <Action ID="Ifball" name="IfBall" speed="{speed}"/>
+                <Action ID="Move" speed="{speed}"/>
             </Fallback>
-            <Action ID="Move"/>
+            <Action ID="Move" speed="{speed}"/>
         </ReactiveSequence>
     </BehaviorTree>
     <!-- ////////// -->

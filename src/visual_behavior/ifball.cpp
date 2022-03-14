@@ -91,18 +91,18 @@ namespace visual_behavior
       double errlin = ball.depth - ideal_depth_ ;
       double errang = ball.x - ideal_x_ ;
 
-      spd.linear = linear_pid_.get_output(errlin);
-     spd.angular = angular_pid_.get_output(errang);
+      speed.linear = linear_pid_.get_output(errlin);
+     speed.angular = angular_pid_.get_output(errang);
 
-      ROS_INFO("linear speed %f, angular %f", spd.linear, spd.angular);
-      BT::TreeNode::setOutput("speed", spd);
+      ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
+      BT::TreeNode::setOutput("speed", speed);
      return BT::NodeStatus::SUCCESS;
     }
     else
     {
-    spd.linear = 0.0;
-    spd.angular = 0.4;
-    BT::TreeNode::setOutput("speed", spd);
+    speed.linear = 0.0;
+    speed.angular = 0.4;
+    BT::TreeNode::setOutput("speed", speed);
     return BT::NodeStatus::FAILURE;
     }
   }
