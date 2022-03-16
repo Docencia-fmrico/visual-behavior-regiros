@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 2.8.3)
 project(visual_behavior)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BUILD_TYPE Debug)
 
-#find_package(ZMQ)
-#if(ZMQ_FOUND)
-#    message(STATUS "ZeroMQ found.")
-#    add_definitions(-DZMQ_FOUND)
-#else()
-#  message(WARNING "ZeroMQ NOT found. Not including PublisherZMQ.")
-#endif()
+find_package(ZMQ)
+if(ZMQ_FOUND)
+    message(STATUS "ZeroMQ found.")
+    add_definitions(-DZMQ_FOUND)
+else()
+  message(WARNING "ZeroMQ NOT found. Not including PublisherZMQ.")
+endif()
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -49,6 +50,7 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 add_library(visual_behavior src/visual_behavior/PIDController.cpp)
 
 add_library(asr_ifball_bt_node SHARED src/visual_behavior/ifball.cpp)
+target_link_libraries(asr_ifball_bt_node visual_behavior)
 add_library(asr_move_bt_node SHARED src/visual_behavior/Move.cpp)
 list(APPEND plugin_libs
   asr_ifball_bt_node
@@ -61,7 +63,7 @@ foreach(bt_plugin ${plugin_libs})
 endforeach()
 
 add_executable(followball_node 
-  src/followball_node
+  src/followball_node.cpp
 )
 target_link_libraries(followball_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES})
 

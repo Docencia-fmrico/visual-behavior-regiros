@@ -30,8 +30,8 @@ namespace visual_behavior
     linear_pid_(0.0, 2.0, 0.0, 0.3),
     angular_pid_(0.0, 3.20, 0.0, 0.8),
     nh_(),
-    depth_sub_(nh_, "/camera/depth/image_raw", 1),
-    hsvf_sub_(nh_, "/hsv/image_filtered", 1)
+    depth_sub_(nh_, "/camera/depth/image_raw", 10),
+    hsvf_sub_(nh_, "/hsv/image_filtered", 10)
   {
 
     typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy_fdp;
@@ -49,7 +49,7 @@ namespace visual_behavior
   void 
   ifball::callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& hsvfilt)
   {
-
+    fprintf(stderr, "aaaaaaaaaa");
     int pos;
     cv_bridge::CvImagePtr img_ptr_depth;
 
@@ -64,16 +64,17 @@ namespace visual_behavior
     
     detected = false;
     for( int h = 0; h < hsvfilt->height; h++){
-        for( int w = 0; w < hsvfilt->width; w++){
-            pos = hsvfilt->step * h + 3 * w;
-            if(hsvfilt->data[pos] != 0   && 
-               hsvfilt->data[pos+1] != 0 &&
-               hsvfilt->data[pos+2] != 0){
-                ball.y = h;
-                ball.x = w;
-                detected = true;
-            }
+      for( int w = 0; w < hsvfilt->width; w++){
+        pos = (hsvfilt->step * h) + (3 * w);
+        ROS_INFO("pos: %d, h=%d s=%d v=%d \n", pos,hsvfilt->data[pos],hsvfilt->data[pos+1],hsvfilt->data[pos+2]);
+        if(hsvfilt->data[pos] != 0   && 
+           hsvfilt->data[pos+1] != 0 &&
+           hsvfilt->data[pos+2] != 0){
+            ball.y = h;
+            ball.x = w;
+            detected = true;
         }
+      }
     }
 
     ball.depth = img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 0.001f;
@@ -92,7 +93,7 @@ namespace visual_behavior
       double errang = ball.x - ideal_x_ ;
 
       speed.linear = linear_pid_.get_output(errlin);
-     speed.angular = angular_pid_.get_output(errang);
+      speed.angular = angular_pid_.get_output(errang);
 
       ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
       BT::TreeNode::setOutput("speed", speed);

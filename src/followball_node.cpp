@@ -33,10 +33,11 @@ int main(int argc, char **argv)
   factory.registerFromPlugin(loader.getOSName("asr_move_bt_node"));
 
   auto blackboard = BT::Blackboard::create();
-  blackboard->set("ball","speed");
 
-  std::string pkgpath = ros::package::getPath("behavior_trees");
-  std::string xml_file = pkgpath + "/behavior_trees/follow_ball_bt.xml";
+  std::string pkgpath = ros::package::getPath("visual_behavior");
+  std::string xml_file = pkgpath + "/behavior_trees/followball_bt.xml";
+
+  std::cerr << "[" << xml_file << "]" << std::endl;
 
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
   auto publisher_zmq = std::make_shared<BT::PublisherZMQ>(tree, 10, 1666, 1667);
