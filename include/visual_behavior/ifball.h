@@ -55,6 +55,9 @@ namespace visual_behavior
       message_filters::Subscriber<sensor_msgs::Image> depth_sub_;
       message_filters::Subscriber<sensor_msgs::Image> hsvf_sub_;
 
+      typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy_fdp;
+      message_filters::Synchronizer<MySyncPolicy_fdp> sync_fdp_;
+
       struct speeds speed;
       struct objectinimage ball;
       bool detected;
