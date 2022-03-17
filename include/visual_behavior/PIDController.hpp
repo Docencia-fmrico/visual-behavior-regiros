@@ -15,7 +15,7 @@
 
 #ifndef VISUAL_BEHAVIOR__PIDCONTROLLER_HPP_
 #define VISUAL_BEHAVIOR__PIDCONTROLLER_HPP_
-
+#include <stdio.h>
 #include <cmath>
 
 namespace visual_behavior

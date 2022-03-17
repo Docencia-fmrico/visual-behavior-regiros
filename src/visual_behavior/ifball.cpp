@@ -18,7 +18,6 @@
 #include "visual_behavior/str_followobj.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
-#include "visual_behavior/PIDController.hpp"
 
 #include "ros/ros.h"
 

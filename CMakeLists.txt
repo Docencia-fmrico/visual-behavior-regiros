@@ -1,15 +1,18 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(visual_behavior)
 
-set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-std=c++17")
+#set(CMAKE_CONFIG_PATH ${CMAKE_MODULE_PATH}  "${CMAKE_CURRENT_LIST_DIR}/cmake")
+#list(APPEND CMAKE_MODULE_PATH "${CMAKE_CONFIG_PATH}")
 
-#find_package(ZMQ)
-#if(ZMQ_FOUND)
-#    message(STATUS "ZeroMQ found.")
-#    add_definitions(-DZMQ_FOUND)
-#else()
-#  message(WARNING "ZeroMQ NOT found. Not including PublisherZMQ.")
-#endif()
+find_package(ZMQ)
+if(ZMQ_FOUND)
+    message(STATUS "ZeroMQ found.")
+    add_definitions(-DZMQ_FOUND)
+else()
+  message(WARNING "ZeroMQ NOT found. Not including PublisherZMQ.")
+endif()
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -36,15 +39,15 @@ CATKIN_DEPENDS
   geometry_msgs
   message_filters
 )
+find_package(BehaviorTreeV3)
+find_package(OpenCV)
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
   ${ZMQ_INCLUDE_DIRS}
-  include
+  ${OpenCV_INCLUDE_DIRS}
 )
-
-find_package(OpenCV)
-include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_library(visual_behavior src/visual_behavior/PIDController.cpp)
 
@@ -61,14 +64,13 @@ foreach(bt_plugin ${plugin_libs})
 endforeach()
 
 add_executable(followball_node 
-  src/followball_node
+  src/followball_node.cpp
 )
-target_link_libraries(followball_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES})
-
+target_link_libraries(followball_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES} ${OpenCV_LIBRARIES})
 
 roslint_cpp(
  src/followball_node.cpp
  include/visual_behavior/PIDController.hpp src/visual_behavior/PIDController.cpp
- include/visual_behavior/ifball.h src/visual_behavior/Ifball.cpp
+ include/visual_behavior/ifball.h src/visual_behavior/ifball.cpp
  include/visual_behavior/Move.h src/visual_behavior/Move.cpp
 )
