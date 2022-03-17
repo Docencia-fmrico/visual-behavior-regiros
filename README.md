@@ -1,16 +1,16 @@
 # Visual Behavior Regiros
 
-# Creators:
-Marina <surname>
+## Creators:
+Marina <surname> \n
 Juan Miguel Valverde ...
 Daniel Quinga ...
 David Duro Aragonés
    
-# Objetive: 
+## Objetive: 
 The main objetive of this project is to make a robot capa
    
-# 1. Follow Ball
+## 1. Follow Ball
    
-# 2. Follow Person
+## 2. Follow Person
    
-# 3. Follow with priority
+## 3. Follow with priority
