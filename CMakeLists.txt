@@ -55,6 +55,7 @@ add_library(asr_move_bt_node SHARED src/visual_behavior/Move.cpp)
 list(APPEND plugin_libs
   asr_ifball_bt_node
   asr_move_bt_node
+  asr_ifperson_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})
