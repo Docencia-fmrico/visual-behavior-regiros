@@ -62,14 +62,19 @@ namespace visual_behavior
       int px = (box.xmax + box.xmin) / 2;
       int py = (box.ymax + box.ymin) / 2;
 
-      person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 0.001f;
+      detected = (box.Class == "person");
 
-      detected = box.Class == "person";
-    }
-    if(person.depth>4.0 )
+      if (detected)
       {
-        detected=false;
+        std::cerr << "person  "  << std::endl;
+        person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 1.0f;
+        break;
       }
+    }
+    if(person.depth > 4.0 || std::isnan(person.depth) || std::isinf(person.depth))
+    {
+      detected=false;
+    }
     if(detected)
     {
       std::cerr << "person at " << person.depth << " in pixel " << person.x << std::endl;
