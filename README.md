@@ -1,7 +1,7 @@
 # Visual Behavior Regiros
 
 ## Creators:
-Marina <surname>
+Marina <surname> <br />
 Juan Miguel Valverde ...
 Daniel Quinga ...
 David Duro Aragonés
