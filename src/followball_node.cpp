@@ -42,7 +42,7 @@ int main(int argc, char **argv)
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
   auto publisher_zmq = std::make_shared<BT::PublisherZMQ>(tree, 10, 1666, 1667);
 
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(20);
 
   int count = 0;
 

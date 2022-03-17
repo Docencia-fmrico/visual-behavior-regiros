@@ -63,7 +63,7 @@ namespace visual_behavior
       bool detected;
       visual_behavior::PIDController linear_pid_;
       visual_behavior::PIDController angular_pid_;
-      const double ideal_depth_ = 1.0;
+      const double ideal_depth_ = 0.6;
       const double ideal_x_ = 320;  
   };
 

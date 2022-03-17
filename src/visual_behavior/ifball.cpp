@@ -46,6 +46,7 @@ namespace visual_behavior
   ifball::callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& hsvfilt)
   {
     int pos;
+    int counter=0;
     cv_bridge::CvImagePtr img_ptr_depth;
 
     try{
@@ -56,7 +57,7 @@ namespace visual_behavior
        ROS_ERROR("cv_bridge exception:  %s", e.what());
        return;
     }
-    
+    ball.depth = 0.0f;
     detected = false;
     for( int h = 0; h < hsvfilt->height; h++){
       for( int w = 0; w < hsvfilt->width; w++){
@@ -66,16 +67,26 @@ namespace visual_behavior
            hsvfilt->data[pos+2] != 0){
             ball.y = h;
             ball.x = w;
-            detected = true;
-            break;
+            ball.depth = ball.depth + img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 1.0f;
+            std::cerr << "depth :"<< ball.depth<< "counter "<< counter << std::endl;
+            counter++;
+            if(counter == 3){
+              ball.depth = ball.depth/3.0;
+              std::cerr << "DEPTH: "<< ball.depth << std::endl;
+              detected = true;
+              break;
+            }
+        }
+        else{
+          if (counter==3){counter = 0;}
+          else {ball.depth = 0.0f;}
         }
         if(detected) {break;}
       }
     }
     if(detected)
     {
-      ball.depth = img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 1.0f;
-      if(ball.depth>4.0){detected=false;}
+      if(ball.depth == 0){detected=false;}
       std::cerr << "ball at " << ball.depth << " in pixel " << ball.x << std::endl;
     }
     
@@ -93,7 +104,7 @@ namespace visual_behavior
       double errang = (ideal_x_ - ball.x)/320;
 
       speed.linear = (linear_pid_.get_output(errlin))*1.0;
-      speed.angular = (angular_pid_.get_output(errang))*0.5;
+      speed.angular = (angular_pid_.get_output(errang))*1.0;
 
       ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
       BT::TreeNode::setOutput("speed", speed);
