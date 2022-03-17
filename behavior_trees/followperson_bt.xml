@@ -3,21 +3,18 @@
     <!-- ////////// -->
     <BehaviorTree ID="BehaviorTree">
         <ReactiveSequence>
-            <ReactiveFallback>
-                <Action ID="ifperson" name="IfPerson" speed="speed"/>
-                <Action ID="Move" name="Seek" speed="speed"/>
-            </ReactiveFallback>
-            <Action ID="Move" speed="speed"/>
+            <Fallback>
+                <Action ID="IfPerson"/>
+                <Action ID="Move"/>
+            </Fallback>
+            <Action ID="Move"/>
         </ReactiveSequence>
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
-        <Action ID="Move">
-            <input_port name="speed"/>
-        </Action>
-        <Action ID="ifperson">
-            <output_port name="speed"/>
-        </Action>
+        <Action ID="IfPerson"/>
+        <Action ID="Ifball"/>
+        <Action ID="Move"/>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

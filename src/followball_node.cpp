@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #include "ros/ros.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"

@@ -1,4 +1,4 @@
-// Copyright 2019 Regiros
+// Copyright 2019 Intelligent Robotics Lab
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 #include "visual_behavior/str_followobj.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
+#include "visual_behavior/PIDController.hpp"
 
 #include "ros/ros.h"
 

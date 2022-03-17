@@ -2,7 +2,7 @@
 <package format="2">
   <name>visual_behavior</name>
   <version>0.0.0</version>
-  <description>The visual_behavior package</description>
+  <description>The visual behavior package</description>
 
   <maintainer email="m.wiesenberg.2020@alumnos.urjc.es">mwiesenberg2020</maintainer>
 
@@ -22,7 +22,7 @@
   <build_depend>roslint</build_depend>
   <build_depend>behaviortree_cpp_v3</build_depend>
   <build_depend>cameras_cpp</build_depend>
-  <build_depend>darknet_ros_msgs</build_depend>
+  <build_depend>darknet_ros</build_depend>
   <build_depend>libzmq3-dev</build_depend>
   <build_depend>message_filters</build_depend>
  
@@ -34,10 +34,6 @@
 	<build_export_depend>image_transport</build_export_depend>
   <build_export_depend>cv_bridge</build_export_depend>
   <build_export_depend>message_filters</build_export_depend>
-  <build_export_depend>behaviortree_cpp_v3</build_export_depend>
-  <build_export_depend>libzmq3-dev</build_export_depend>
-  <build_export_depend>darknet_ros_msgs</build_export_depend>
-
  
   <exec_depend>kobuki_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
@@ -48,9 +44,9 @@
   <exec_depend>roslint</exec_depend>
   <exec_depend>behaviortree_cpp_v3</exec_depend>
   <exec_depend>cameras_cpp</exec_depend>
-  <exec_depend>darknet_ros_msgs</exec_depend>
+  <exec_depend>darknet_ros</exec_depend>
   <exec_depend>libzmq3-dev</exec_depend>
-  <exec_depend>message_filters</exec_depend>
+    <exec_depend>message_filters</exec_depend>
 
   <export>
   </export>

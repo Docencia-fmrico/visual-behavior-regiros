@@ -30,10 +30,6 @@
 
 #include "ros/ros.h"
 
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <std_msgs/Float32.h>
-
 namespace visual_behavior
 {
 
