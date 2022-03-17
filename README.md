@@ -7,20 +7,20 @@ Daniel Quinga ... <br />
 David Duro Aragonés <br />
 
 ## Index
-   Global Objetives <br />
-   Follow Ball <br />
-      Introduction <br />
-      Objetive <br />
-      What we have done? <br />
-   Follow Person <br />
-      Introduction <br />
-      Objetive <br />
-      What we have done? <br />
-   Follow with priority <br />
-      Introduction <br />
-      Objetive <br />
-      What we have done? <br />
-   Implementations <br />
+   - [Global Objetives](#Global Objetives)
+   - Follow Ball <br />
+     - Introduction <br />
+     - Objetive <br />
+     - What we have done? <br />
+   - Follow Person <br />
+     - Introduction <br />
+     - Objetive <br />
+     - What we have done? <br />
+   - Follow with priority <br />
+     - Introduction <br />
+     - Objetive <br />
+     - What we have done? <br />
+   - Implementations <br />
    
 ## 0. Global Objetives: 
 The main objetive of this project is to make a robot capa
