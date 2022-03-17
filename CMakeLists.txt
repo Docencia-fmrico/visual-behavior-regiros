@@ -55,11 +55,15 @@ target_link_libraries(asr_ifball_bt_node visual_behavior)
 add_library(asr_ifperson_bt_node SHARED src/visual_behavior/ifperson.cpp)
 target_link_libraries(asr_ifperson_bt_node visual_behavior)
 
+add_library(asr_ifboth_bt_node SHARED src/visual_behavior/ifboth.cpp)
+target_link_libraries(asr_ifboth_bt_node visual_behavior)
+
 add_library(asr_move_bt_node SHARED src/visual_behavior/Move.cpp)
 
 list(APPEND plugin_libs
   asr_ifball_bt_node
   asr_ifperson_bt_node
+  asr_ifboth_bt_node
   asr_move_bt_node
 )
 
