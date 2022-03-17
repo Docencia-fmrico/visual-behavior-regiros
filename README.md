@@ -42,7 +42,7 @@ The main objetive of this project is to make a robot capable of following a ball
 #### 1.2.2. Behavior Tree
    The behavior tree used for this implementatios is the following one:
 
-   ![Follow ball BT](https://urjc-my.sharepoint.com/:i:/g/personal/jm_valverde_2020_alumnos_urjc_es/Eb5wKg4sTOVMrwv5sSqd1KsBLUI07DuriT_1vpLVG04ccw?e=P58n0B)
+   ![Follow ball BT](https://i.postimg.cc/pdYrRHw1/bt-ifball.png "Follow ball BT")
 
 ## 2. Follow Person
    
@@ -58,7 +58,7 @@ The main objetive of this project is to make a robot capable of following a ball
 #### 2.2.1. Behavior Tree
    The behavior tree used for this implementatios is the following one:
 
-   ![Follow Person BT](https://urjc-my.sharepoint.com/:i:/g/personal/jm_valverde_2020_alumnos_urjc_es/EWtg6uMl4uBDnFwe-hUxFEoBEF26BecAiaTXUb9MMXNRSw?e=NmsSee)
+   ![Follow Person BT](https://i.postimg.cc/JsPRJ1mr/bt-if-person.png "Follow person BT")
 
 ### 2.3. Working in simulator
    [Operation](https://urjc-my.sharepoint.com/:v:/g/personal/da_quinga_2020_alumnos_urjc_es/Ed7FduVtF61FijoWPuvrN4UBaSExEh2OFEv1WyQdnvhRlA?e=ohRvtC)
@@ -76,7 +76,7 @@ The main objetive of this project is to make a robot capable of following a ball
 #### 3.2.1. Behavior Tree
    The behavior tree used for this implementatios is the following one:
 
-   ![Follow Both BT](https://urjc-my.sharepoint.com/:i:/g/personal/jm_valverde_2020_alumnos_urjc_es/ESxn_cqKoHdDtjvKqCzcKngBln7TMRyLV7nnN_JiKkhtIA?e=KaTBMG)  
+   ![Follow Both BT](https://i.postimg.cc/v1KMq3cC/bt-if-both.png "Follow both BT")  
 
 ## 4. Implementations
    Finally we have created a visual-behavior.yaml configuration file, to be able to change basic parameters such as kobuki speed, turning distance, etc.
