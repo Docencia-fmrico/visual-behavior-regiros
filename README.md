@@ -42,9 +42,11 @@ The main objetive of this project is to make a robot capa
 ## 2. Follow Person
    
 ### 2.0. Introduction
+   The implementation of this program is based on a behavior tree, which changes state depending on whether it detects a person. To locate the person, it is mainly used bounding boxes.
 
 ### 2.1. Objetive
-
+   Our main objective was to create a conditioning program called ifperson, which in addition to detecting a person, would also filter its bounding box to return the speed corresponding to the distance and rotation of it. To do this, various means have been used.
+   
 ### 2.2. What we have done?
    
    
