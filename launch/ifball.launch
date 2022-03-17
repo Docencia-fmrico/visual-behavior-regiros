@@ -1,0 +1,3 @@
+<launch>
+	<node pkg="visual_behavior" type="followboth_node" name="FollowBoth_Node" output="screen"/>
+</launch>
