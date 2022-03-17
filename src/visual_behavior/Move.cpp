@@ -36,9 +36,6 @@ Move::halt()
 BT::NodeStatus
 Move::tick()
 {
-    std::cerr << "MOVE" << std::endl;
-
-  // x = stod(entr_p.c_std());
   speed = getInput<speeds>("speed").value();
 
   geometry_msgs::Twist cmd;
