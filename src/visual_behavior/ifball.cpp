@@ -26,6 +26,7 @@ namespace visual_behavior
 {
   ifball::ifball(const std::string& name, const BT::NodeConfiguration & config)
   : BT::ActionNodeBase(name, config),
+    ticks(0),
     linear_pid_(0.0, 1.0, 0.0, 1.0),
     angular_pid_(0.0, 1.0, 0.0, 1.0),
     nh_(),
@@ -58,17 +59,38 @@ namespace visual_behavior
     }
     
     detected = false;
+    int pixels = 0;
+    int corner_y = 0;
+    int corner_x = 0;
+
     for( int h = 0; h < hsvfilt->height; h++){
       for( int w = 0; w < hsvfilt->width; w++){
         pos = (hsvfilt->step * h) + (3 * w);
-        if(hsvfilt->data[pos] != 0   && 
+        if(hsvfilt->data[pos]   != 0 && 
            hsvfilt->data[pos+1] != 0 &&
            hsvfilt->data[pos+2] != 0){
-            ball.y = h;
-            ball.x = w;
-            detected = true;
-            break;
+             corner_y = h - 15;
+             corner_x = w - 30;
+            for( int h2 = corner_y; h2 < corner_y + 30; h2++){
+              for( int w2 = corner_x; w2 < corner_x + 30; w2++){
+                pos = (hsvfilt->step * h2) + (3 * w2);
+
+                if(hsvfilt->data[pos]   != 0 && 
+                  hsvfilt->data[pos+1] != 0 &&
+                  hsvfilt->data[pos+2] != 0){
+                    pixels++;
+                }
+              }
+            }
+            ROS_INFO("pixeles: %d", pixels);
+            if(pixels > 50){
+              ball.y = h;
+              ball.x = w;
+              detected = true;
+              break;
+            }
         }
+        pixels = 0;
         if(detected) {break;}
       }
     }
@@ -92,8 +114,8 @@ namespace visual_behavior
       double errlin = (ball.depth - ideal_depth_)/3.0 ;
       double errang = (ideal_x_ - ball.x)/320;
 
-      speed.linear = (linear_pid_.get_output(errlin))*1.0;
-      speed.angular = (angular_pid_.get_output(errang))*0.5;
+      speed.linear = (linear_pid_.get_output(errlin))*-1.0;
+      speed.angular = (angular_pid_.get_output(errang))*-0.5;
 
       ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
       BT::TreeNode::setOutput("speed", speed);
@@ -101,8 +123,14 @@ namespace visual_behavior
     }
     else
     {
-    speed.linear = 0.0;
-    speed.angular = 0.4;
+      if(ticks == 5){
+        speed.linear = 0.0;
+        speed.angular = 0.4;
+        ticks = 0;
+      }
+      else{
+        ticks++;
+      }
     BT::TreeNode::setOutput("speed", speed);
     return BT::NodeStatus::FAILURE;
     }

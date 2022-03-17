@@ -61,10 +61,12 @@ namespace visual_behavior
       struct speeds speed;
       struct objectinimage ball;
       bool detected;
+      int ticks;
       visual_behavior::PIDController linear_pid_;
       visual_behavior::PIDController angular_pid_;
       const double ideal_depth_ = 1.0;
       const double ideal_x_ = 320;  
+      
   };
 
 }  // namespace visual_behavior
