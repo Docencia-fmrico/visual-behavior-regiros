@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(visual_behavior)
 
-#set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-std=c++17")
-#set(CMAKE_CONFIG_PATH ${CMAKE_MODULE_PATH}  "${CMAKE_CURRENT_LIST_DIR}/cmake")
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_CONFIG_PATH}")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BUILD_TYPE Debug)
 
 find_package(ZMQ)
 if(ZMQ_FOUND)
@@ -52,6 +50,7 @@ include_directories(
 add_library(visual_behavior src/visual_behavior/PIDController.cpp)
 
 add_library(asr_ifball_bt_node SHARED src/visual_behavior/ifball.cpp)
+target_link_libraries(asr_ifball_bt_node visual_behavior)
 add_library(asr_move_bt_node SHARED src/visual_behavior/Move.cpp)
 list(APPEND plugin_libs
   asr_ifball_bt_node

@@ -30,7 +30,7 @@ Move::Move(const std::string& name, const BT::NodeConfiguration& config)
 void
 Move::halt()
 {
-  ROS_INFO("MOVING");
+  ROS_INFO("move halt");
 }
 
 BT::NodeStatus
@@ -38,22 +38,22 @@ Move::tick()
 {
   speed = getInput<struct speeds>("speed").value();
 
-  if (counter_++ < 50)
-  {
+  //if (counter_++ < 50)
+  //{
     geometry_msgs::Twist cmd;
     cmd.linear.x = speed.linear;
     cmd.angular.z = speed.angular;
 
     pub_vel_.publish(cmd);
     return BT::NodeStatus::RUNNING;
-  }
-  else
-  {
-    geometry_msgs::Twist cmd;
-    pub_vel_.publish(cmd);
+  //}
+  //else
+  //{
+   // geometry_msgs::Twist cmd;
+   // pub_vel_.publish(cmd);
 
-    return BT::NodeStatus::SUCCESS;
-  }
+    //return BT::NodeStatus::SUCCESS;
+  //}
 }
 
 } // namespace visual_behavior
