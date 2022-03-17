@@ -5,7 +5,7 @@
         <ReactiveSequence>
             <ReactiveFallback>
                 <Action ID="ifperson" name="IfPerson" speed="speed"/>
-                <Action ID="Move" name="Seek" speed="speed"/>
+                <Action ID="Move" speed="speed"/>
             </ReactiveFallback>
             <Action ID="Move" speed="speed"/>
         </ReactiveSequence>

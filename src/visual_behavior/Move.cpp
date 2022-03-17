@@ -36,24 +36,17 @@ Move::halt()
 BT::NodeStatus
 Move::tick()
 {
-  speed = getInput<struct speeds>("speed").value();
+    std::cerr << "MOVE" << std::endl;
 
-  //if (counter_++ < 50)
-  //{
-    geometry_msgs::Twist cmd;
-    cmd.linear.x = speed.linear;
-    cmd.angular.z = speed.angular;
+  // x = stod(entr_p.c_std());
+  speed = getInput<speeds>("speed").value();
 
-    pub_vel_.publish(cmd);
-    return BT::NodeStatus::RUNNING;
-  //}
-  //else
-  //{
-   // geometry_msgs::Twist cmd;
-   // pub_vel_.publish(cmd);
+  geometry_msgs::Twist cmd;
+  cmd.linear.x = speed.linear;
+  cmd.angular.z = speed.angular;
 
-    //return BT::NodeStatus::SUCCESS;
-  //}
+  pub_vel_.publish(cmd);
+  return BT::NodeStatus::RUNNING;
 }
 
 } // namespace visual_behavior

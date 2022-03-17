@@ -1,4 +1,4 @@
-// Copyright 2019 Regiros
+// Copyright 2022 Regiros
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 #include "visual_behavior/str_followobj.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
-#include "visual_behavior/PIDController.hpp"
 
 
 #include "ros/ros.h"
@@ -48,6 +47,7 @@ namespace visual_behavior
   {
     cv_bridge::CvImagePtr img_ptr_depth;
 
+    ROS_INFO("Entra en el callback");
     try{
         img_ptr_depth = cv_bridge::toCvCopy(*depth, sensor_msgs::image_encodings::TYPE_32FC1);
     }
@@ -58,15 +58,21 @@ namespace visual_behavior
     }
     
     detected = false;
+    ROS_INFO("Antes del for");
     for (const auto & box : boxes->bounding_boxes) {
       int px = (box.xmax + box.xmin) / 2;
       int py = (box.ymax + box.ymin) / 2;
 
-      person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 0.001f;
-
+      ROS_INFO("Vuelta del for");
       detected = box.Class == "person";
+      if (detected)
+      {
+        ROS_INFO("Persona detectada");
+        person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 1.0f;
+      }
     }
-    if(person.depth>4.0 )
+    ROS_INFO("Despues del for");
+    if(person.depth>4.0)
       {
         detected=false;
       }
@@ -76,7 +82,6 @@ namespace visual_behavior
     }
     
   }
-
 
   BT::NodeStatus
   ifperson::tick()
@@ -97,9 +102,11 @@ namespace visual_behavior
     }
     else
     {
-    speed.linear = 0.0;
+    speed.linear = 0;
     speed.angular = 0.4;
+    ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
     BT::TreeNode::setOutput("speed", speed);
+    ROS_INFO("aaaaa");
     return BT::NodeStatus::FAILURE;
     }
   }
