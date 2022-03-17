@@ -4,17 +4,20 @@
     <BehaviorTree ID="BehaviorTree">
         <ReactiveSequence>
             <Fallback>
-                <Action ID="IfPerson"/>
-                <Action ID="Move"/>
+                <Action ID="IfPerson" name="ifPerson" speed="{speed}"/>
+                <Action ID="Move" speed="{speed}"/>
             </Fallback>
-            <Action ID="Move"/>
+            <Action ID="Move" speed="{speed}"/>
         </ReactiveSequence>
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
-        <Action ID="IfPerson"/>
-        <Action ID="Ifball"/>
         <Action ID="Move"/>
+            <input_port name="{speed}"/>
+        </Action>
+        <Action ID="IfPerson"/>
+            <output_port name="{speed}"/>
+        </Action>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

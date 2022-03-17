@@ -5,10 +5,10 @@
         <ReactiveSequence>
             <Fallback>
                 <ReactiveFallback>
-                    <Action ID="Ifball"/>
-                    <Action ID="IfPerson"/>
+                    <Action ID="ifball" name="ifBall" speed="{speed}"/>
+                    <Action ID="IfPerson" name="ifPerson" speed="{speed}"/>
                 </ReactiveFallback>
-                <Action ID="Move" name="Seek"/>
+                <Action ID="Move" name="Seek" speed="{speed}"/>
             </Fallback>
             <Action ID="Move"/>
         </ReactiveSequence>
@@ -16,8 +16,14 @@
     <!-- ////////// -->
     <TreeNodesModel>
         <Action ID="IfPerson"/>
-        <Action ID="Ifball"/>
+            <output_port name="{speed}"/>
+        </Action>
+        <Action ID="ifball"/>
+            <output_port name="{speed}"/>
+        </Action>
         <Action ID="Move"/>
+            <input_port name="{speed}"/>
+        </Action>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

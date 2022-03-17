@@ -1,0 +1,3 @@
+<launch>
+	<node pkg="visual_behavior" type="followpriority_node" name="FollowPriority_Node" output="screen"/>
+</launch>
