@@ -59,15 +59,15 @@ namespace visual_behavior
     
     detected = false;
     for (const auto & box : boxes->bounding_boxes) {
-      int px = (box.xmax + box.xmin) / 2;
-      int py = (box.ymax + box.ymin) / 2;
+      person.x = (box.xmax + box.xmin) / 2;
+      person.y = (box.ymax + box.ymin) / 2;
 
       detected = (box.Class == "person");
 
       if (detected)
       {
         std::cerr << "person  "  << std::endl;
-        person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 1.0f;
+        person.depth = img_ptr_depth->image.at<float>(cv::Point(person.x, person.y)) * 1.0f;
         break;
       }
     }
