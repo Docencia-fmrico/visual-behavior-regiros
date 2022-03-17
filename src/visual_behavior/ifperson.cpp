@@ -14,38 +14,38 @@
 
 #include <string>
 
-#include "visual_behavior/ifball.h"
+#include "visual_behavior/ifperson.h"
 #include "visual_behavior/str_followobj.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "visual_behavior/PIDController.hpp"
 
+
 #include "ros/ros.h"
 
 namespace visual_behavior
 {
-  ifball::ifball(const std::string& name, const BT::NodeConfiguration & config)
+  ifperson::ifperson(const std::string& name, const BT::NodeConfiguration & config)
   : BT::ActionNodeBase(name, config),
     linear_pid_(0.0, 1.0, 0.0, 1.0),
     angular_pid_(0.0, 1.0, 0.0, 1.0),
     nh_(),
     depth_sub_(nh_, "/camera/depth/image_raw", 1),
-    hsvf_sub_(nh_, "/hsv/image_filtered", 1),
-    sync_fdp_(MySyncPolicy_fdp(10), depth_sub_, hsvf_sub_)
+    bbx_sub_(nh_, "/darknet_ros/bounding_boxes", 1),
+    sync_bbx_(MySyncPolicy_bbx(10), depth_sub_, bbx_sub_)
   {
-    sync_fdp_.registerCallback(boost::bind(&ifball::callback_fdp, this, _1, _2));
+    sync_bbx_.registerCallback(boost::bind(&ifperson::callback_bbx, this, _1, _2));
   }
 
   void
-  ifball::halt()
+  ifperson::halt()
   {
-    ROS_INFO("ifball halt");
+    ROS_INFO("ifperson halt");
   }
 
   void 
-  ifball::callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& hsvfilt)
+  ifperson::callback_bbx(const sensor_msgs::ImageConstPtr& depth, const darknet_ros_msgs::BoundingBoxesConstPtr& boxes)
   {
-    int pos;
     cv_bridge::CvImagePtr img_ptr_depth;
 
     try{
@@ -58,39 +58,35 @@ namespace visual_behavior
     }
     
     detected = false;
-    for( int h = 0; h < hsvfilt->height; h++){
-      for( int w = 0; w < hsvfilt->width; w++){
-        pos = (hsvfilt->step * h) + (3 * w);
-        if(hsvfilt->data[pos] != 0   && 
-           hsvfilt->data[pos+1] != 0 &&
-           hsvfilt->data[pos+2] != 0){
-            ball.y = h;
-            ball.x = w;
-            detected = true;
-            break;
-        }
-        if(detected) {break;}
-      }
+    for (const auto & box : boxes->bounding_boxes) {
+      int px = (box.xmax + box.xmin) / 2;
+      int py = (box.ymax + box.ymin) / 2;
+
+      person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 0.001f;
+
+      detected = box.Class == "person";
     }
+    if(person.depth>4.0 )
+      {
+        detected=false;
+      }
     if(detected)
     {
-      ball.depth = img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 1.0f;
-      if(ball.depth>4.0){detected=false;}
-      std::cerr << "ball at " << ball.depth << " in pixel " << ball.x << std::endl;
+      std::cerr << "person at " << person.depth << " in pixel " << person.x << std::endl;
     }
     
   }
 
 
   BT::NodeStatus
-  ifball::tick()
+  ifperson::tick()
   {   
-    ROS_INFO("ifball [%d]", detected);
+    ROS_INFO("ifperson [%d]", detected);
 
     if (detected)
     {
-      double errlin = (ball.depth - ideal_depth_)/3.0 ;
-      double errang = (ideal_x_ - ball.x)/320;
+      double errlin = (person.depth - ideal_depth_)/3.0 ;
+      double errang = (ideal_x_ - person.x)/320;
 
       speed.linear = (linear_pid_.get_output(errlin))*1.0;
       speed.angular = (angular_pid_.get_output(errang))*0.5;
@@ -112,5 +108,5 @@ namespace visual_behavior
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
-  factory.registerNodeType<visual_behavior::ifball>("ifball");
+  factory.registerNodeType<visual_behavior::ifperson>("IfPerson");
 }
