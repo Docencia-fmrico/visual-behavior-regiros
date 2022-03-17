@@ -47,7 +47,6 @@ namespace visual_behavior
   {
     cv_bridge::CvImagePtr img_ptr_depth;
 
-    ROS_INFO("Entra en el callback");
     try{
         img_ptr_depth = cv_bridge::toCvCopy(*depth, sensor_msgs::image_encodings::TYPE_32FC1);
     }
@@ -58,24 +57,23 @@ namespace visual_behavior
     }
     
     detected = false;
-    ROS_INFO("Antes del for");
     for (const auto & box : boxes->bounding_boxes) {
-      int px = (box.xmax + box.xmin) / 2;
-      int py = (box.ymax + box.ymin) / 2;
+      person.x = (box.xmax + box.xmin) / 2;
+      person.y = (box.ymax + box.ymin) / 2;
 
-      ROS_INFO("Vuelta del for");
-      detected = box.Class == "person";
+      detected = (box.Class == "person");
+
       if (detected)
       {
-        ROS_INFO("Persona detectada");
-        person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 1.0f;
+        std::cerr << "person  "  << std::endl;
+        person.depth = img_ptr_depth->image.at<float>(cv::Point(person.x, person.y)) * 1.0f;
+        break;
       }
     }
-    ROS_INFO("Despues del for");
-    if(person.depth>4.0)
-      {
-        detected=false;
-      }
+    if(person.depth > 4.0 || std::isnan(person.depth) || std::isinf(person.depth))
+    {
+      detected=false;
+    }
     if(detected)
     {
       std::cerr << "person at " << person.depth << " in pixel " << person.x << std::endl;
