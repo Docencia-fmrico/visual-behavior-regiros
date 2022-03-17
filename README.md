@@ -1,3 +1,4 @@
+[[_TOC_]]
 # Visual Behavior Regiros
 
 ## Creators:
