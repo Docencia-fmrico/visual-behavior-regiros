@@ -1,4 +1,4 @@
-// Copyright 2019 Regiros
+// Copyright 2022 Regiros
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 #include "visual_behavior/str_followobj.h"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
-#include "visual_behavior/PIDController.hpp"
 
 
 #include "ros/ros.h"
@@ -59,24 +58,28 @@ namespace visual_behavior
     
     detected = false;
     for (const auto & box : boxes->bounding_boxes) {
-      int px = (box.xmax + box.xmin) / 2;
-      int py = (box.ymax + box.ymin) / 2;
+      person.x = (box.xmax + box.xmin) / 2;
+      person.y = (box.ymax + box.ymin) / 2;
 
-      person.depth = img_ptr_depth->image.at<float>(cv::Point(px, py)) * 0.001f;
+      detected = (box.Class == "person");
 
-      detected = box.Class == "person";
-    }
-    if(person.depth>4.0 )
+      if (detected)
       {
-        detected=false;
+        std::cerr << "person  "  << std::endl;
+        person.depth = img_ptr_depth->image.at<float>(cv::Point(person.x, person.y)) * 1.0f;
+        break;
       }
+    }
+    if(person.depth > 4.0 || std::isnan(person.depth) || std::isinf(person.depth))
+    {
+      detected=false;
+    }
     if(detected)
     {
       std::cerr << "person at " << person.depth << " in pixel " << person.x << std::endl;
     }
     
   }
-
 
   BT::NodeStatus
   ifperson::tick()
@@ -97,9 +100,11 @@ namespace visual_behavior
     }
     else
     {
-    speed.linear = 0.0;
+    speed.linear = 0;
     speed.angular = 0.4;
+    ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
     BT::TreeNode::setOutput("speed", speed);
+    ROS_INFO("aaaaa");
     return BT::NodeStatus::FAILURE;
     }
   }
