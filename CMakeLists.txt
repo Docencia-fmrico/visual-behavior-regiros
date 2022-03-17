@@ -23,6 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
   behaviortree_cpp_v3
   cameras_cpp
   message_filters
+  darknet_ros_msgs
 )
 
 catkin_package(
@@ -36,6 +37,7 @@ CATKIN_DEPENDS
   cameras_cpp
   geometry_msgs
   message_filters
+  darknet_ros_msgs
 )
 find_package(BehaviorTreeV3)
 find_package(OpenCV)
@@ -61,7 +63,6 @@ list(APPEND plugin_libs
   asr_ifball_bt_node
   asr_ifperson_bt_node
   asr_move_bt_node
-  asr_ifperson_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})
@@ -79,12 +80,13 @@ add_executable(followboth_node
   src/followboth_node.cpp
 )
 target_link_libraries(followball_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(followperson_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(followboth_node ${catkin_LIBRARIES} ${ZMQ_LIBRARIES} ${OpenCV_LIBRARIES})
 
 roslint_cpp(
  src/followball_node.cpp
  include/visual_behavior/PIDController.hpp src/visual_behavior/PIDController.cpp
  include/visual_behavior/ifball.h src/visual_behavior/ifball.cpp
  include/visual_behavior/ifperson.h src/visual_behavior/ifperson.cpp
- include/visual_behavior/ifboth.h src/visual_behavior/ifboth.cpp
  include/visual_behavior/Move.h src/visual_behavior/Move.cpp
 )

@@ -31,7 +31,6 @@ int main(int argc, char **argv)
 
   factory.registerFromPlugin(loader.getOSName("asr_ifball_bt_node"));
   factory.registerFromPlugin(loader.getOSName("asr_ifperson_bt_node"));
-  factory.registerFromPlugin(loader.getOSName("asr_ifboth_bt_node"));
   factory.registerFromPlugin(loader.getOSName("asr_move_bt_node"));
 
   auto blackboard = BT::Blackboard::create();

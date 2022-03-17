@@ -22,7 +22,7 @@
   <build_depend>roslint</build_depend>
   <build_depend>behaviortree_cpp_v3</build_depend>
   <build_depend>cameras_cpp</build_depend>
-  <build_depend>darknet_ros</build_depend>
+  <build_depend>darknet_ros_msgs</build_depend>
   <build_depend>libzmq3-dev</build_depend>
   <build_depend>message_filters</build_depend>
  
@@ -36,6 +36,8 @@
   <build_export_depend>message_filters</build_export_depend>
   <build_export_depend>behaviortree_cpp_v3</build_export_depend>
   <build_export_depend>libzmq3-dev</build_export_depend>
+  <build_export_depend>darknet_ros_msgs</build_export_depend>
+
  
   <exec_depend>kobuki_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
@@ -46,7 +48,7 @@
   <exec_depend>roslint</exec_depend>
   <exec_depend>behaviortree_cpp_v3</exec_depend>
   <exec_depend>cameras_cpp</exec_depend>
-  <exec_depend>darknet_ros</exec_depend>
+  <exec_depend>darknet_ros_msgs</exec_depend>
   <exec_depend>libzmq3-dev</exec_depend>
   <exec_depend>message_filters</exec_depend>
 
