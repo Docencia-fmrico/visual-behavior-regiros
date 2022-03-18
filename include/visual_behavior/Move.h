@@ -16,6 +16,7 @@
 #ifndef VISUAL_BEHAVIOR_MOVE_H
 #define VISUAL_BEHAVIOR_MOVE_H
 
+#include "string"
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 #include "visual_behavior/str_followobj.h"
@@ -41,7 +42,6 @@ class Move : public BT::ActionNodeBase
   }
 
   private:
-
     ros::NodeHandle nh_;
 
     struct speeds speed;
@@ -50,7 +50,5 @@ class Move : public BT::ActionNodeBase
 
     int counter_;
 };
-
 }  // namespace visual_behavior
-
 #endif  // VISUAL_BEHAVIOR_MOVE_H

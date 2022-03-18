@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "string"
 #include "visual_behavior/Move.h"
 #include "ros/ros.h"
 #include "behaviortree_cpp_v3/behavior_tree.h"
@@ -22,11 +23,11 @@ namespace visual_behavior
 {
 
 Move::Move(const std::string& name, const BT::NodeConfiguration& config)
-:BT::ActionNodeBase(name, config),counter_(0)
+:BT::ActionNodeBase(name, config), counter_(0)
 {
   pub_vel_ = nh_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
 }
-  
+
 void
 Move::halt()
 {
@@ -46,7 +47,9 @@ Move::tick()
   return BT::NodeStatus::RUNNING;
 }
 
-} // namespace visual_behavior
+
+}  // namespace visual_behavior
+
 
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)

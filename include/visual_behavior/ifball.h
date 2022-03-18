@@ -15,6 +15,8 @@
 #ifndef VISUAL_BEHAVIOR_IFBALL_H
 #define VISUAL_BEHAVIOR_IFBALL_H
 
+#include "string"
+
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
@@ -26,7 +28,7 @@
 #include "behaviortree_cpp_v3/bt_factory.h"
 
 #include "visual_behavior/str_followobj.h"
-#include "visual_behavior/PIDController.hpp"
+#include "visual_behavior/PIDController.h"
 
 #include "ros/ros.h"
 
@@ -36,41 +38,39 @@
 
 namespace visual_behavior
 {
+class ifball : public BT::ActionNodeBase
+{
+  public:
+    explicit ifball(const std::string& name, const BT::NodeConfiguration& config);
 
-  class ifball : public BT::ActionNodeBase  
-  {
-    public:
-      explicit ifball(const std::string& name, const BT::NodeConfiguration& config);
+    void halt();
 
-      void halt();
+    BT::NodeStatus tick();
 
-      BT::NodeStatus tick();
+    void callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& rgb);
 
-      void callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& rgb);
+    static BT::PortsList providedPorts()
+    {
+      return { BT::OutputPort<struct speeds>("speed")};
+    }
 
-      static BT::PortsList providedPorts()
-      {
-       return { BT::OutputPort<struct speeds>("speed")};
-      }
+  private:
+    ros::NodeHandle nh_;
 
-    private:
-      ros::NodeHandle nh_;
+    message_filters::Subscriber<sensor_msgs::Image> depth_sub_;
+    message_filters::Subscriber<sensor_msgs::Image> hsvf_sub_;
 
-      message_filters::Subscriber<sensor_msgs::Image> depth_sub_;
-      message_filters::Subscriber<sensor_msgs::Image> hsvf_sub_;
+    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy_fdp;
+    message_filters::Synchronizer<MySyncPolicy_fdp> sync_fdp_;
 
-      typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy_fdp;
-      message_filters::Synchronizer<MySyncPolicy_fdp> sync_fdp_;
-
-      struct speeds speed;
-      struct objectinimage ball;
-      bool detected;
-      visual_behavior::PIDController linear_pid_;
-      visual_behavior::PIDController angular_pid_;
-      const double ideal_depth_ = 1.0;
-      const double ideal_x_ = 320;  
-  };
-
+    struct speeds speed;
+    struct objectinimage ball;
+    bool detected;
+    visual_behavior::PIDController linear_pid_;
+    visual_behavior::PIDController angular_pid_;
+    const double ideal_depth_ = 1.0;
+    const double ideal_x_ = 320;
+};
 }  // namespace visual_behavior
 
 #endif  // VISUAL_BEHAVIOR_IFBALL_H

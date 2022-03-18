@@ -87,7 +87,7 @@ roslint_cpp(
  src/followball_node.cpp
  src/followperson_node.cpp
  src/followboth_node.cpp
- include/visual_behavior/PIDController.hpp src/visual_behavior/PIDController.cpp
+ include/visual_behavior/PIDController.h src/visual_behavior/PIDController.cpp
  include/visual_behavior/ifball.h src/visual_behavior/ifball.cpp
  include/visual_behavior/ifperson.h src/visual_behavior/ifperson.cpp
  include/visual_behavior/Move.h src/visual_behavior/Move.cpp

@@ -41,54 +41,54 @@ namespace visual_behavior
     ROS_INFO("ifball halt");
   }
 
-  void 
+  void
   ifball::callback_fdp(const sensor_msgs::ImageConstPtr& depth, const sensor_msgs::ImageConstPtr& hsvfilt)
   {
     int pos;
     cv_bridge::CvImagePtr img_ptr_depth;
 
-    try{
-        img_ptr_depth = cv_bridge::toCvCopy(*depth, sensor_msgs::image_encodings::TYPE_32FC1);
+    try
+    {
+      img_ptr_depth = cv_bridge::toCvCopy(*depth, sensor_msgs::image_encodings::TYPE_32FC1);
     }
     catch (cv_bridge::Exception& e)
     {
-       ROS_ERROR("cv_bridge exception:  %s", e.what());
-       return;
+      ROS_ERROR("cv_bridge exception:  %s", e.what());
+      return;
     }
-    
+
     detected = false;
-    for( int h = 0; h < hsvfilt->height; h++){
-      for( int w = 0; w < hsvfilt->width; w++){
+    for (int h = 0; h < hsvfilt->height; h++)
+    {
+      for (int w = 0; w < hsvfilt->width; w++)
+      {
         pos = (hsvfilt->step * h) + (3 * w);
-        if(hsvfilt->data[pos] != 0   && 
-           hsvfilt->data[pos+1] != 0 &&
-           hsvfilt->data[pos+2] != 0){
-            ball.y = h;
-            ball.x = w;
-            detected = true;
-            break;
+        if ((hsvfilt->data[pos] != 0) && (hsvfilt->data[pos+1] != 0) && (hsvfilt->data[pos+2] != 0))
+        {
+          ball.y = h;
+          ball.x = w;
+          detected = true;
+          break;
         }
-        if(detected) {break;}
+        if (detected) { break; }
       }
     }
-    if(detected)
+    if (detected)
     {
       ball.depth = img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 1.0f;
-      if(ball.depth>4.0){detected=false;}
+      if (ball.depth > 4.0) {detected = false;}
       std::cerr << "ball at " << ball.depth << " in pixel " << ball.x << std::endl;
     }
-    
   }
-
 
   BT::NodeStatus
   ifball::tick()
-  {   
+  {
     ROS_INFO("ifball [%d]", detected);
 
     if (detected)
     {
-      double errlin = (ball.depth - ideal_depth_)/3.0 ;
+      double errlin = (ball.depth - ideal_depth_)/3.0;
       double errang = (ideal_x_ - ball.x)/320;
 
       speed.linear = (linear_pid_.get_output(errlin))*1.0;
@@ -106,8 +106,9 @@ namespace visual_behavior
     return BT::NodeStatus::FAILURE;
     }
   }
+}  // namespace visual_behavior
 
-} // namespace visual_behavior
+
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {

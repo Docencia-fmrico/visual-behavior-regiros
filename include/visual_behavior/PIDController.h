@@ -13,8 +13,8 @@
 // limitations under the License.
 
 
-#ifndef VISUAL_BEHAVIOR__PIDCONTROLLER_HPP_
-#define VISUAL_BEHAVIOR__PIDCONTROLLER_HPP_
+#ifndef VISUAL_BEHAVIOR__PIDCONTROLLER_H
+#define VISUAL_BEHAVIOR__PIDCONTROLLER_H
 #include <stdio.h>
 #include <cmath>
 
@@ -39,4 +39,4 @@ private:
 
 }  // namespace visual_behavior
 
-#endif  // VISUAL_BEHAVIOR__PIDCONTROLLER_HPP_
+#endif  // VISUAL_BEHAVIOR__PIDCONTROLLER_H
