@@ -3,23 +3,30 @@
 ## Creators:
 Marina Wiesenberg Bustillo <br />
 Juan Miguel Valverde García <br />
-Daniel Quinga ... <br />
+Daniel Quinga López <br />
 David Duro Aragonés <br />
 
 ## Index
    - Global Objetives
    - Follow Ball 
-     - Introduction 
-     - Objetive 
-     - What we have done? 
+      - Introduction 
+      - Objetive 
+      - What have we done? 
+         - Some problems 
+         - Behavior Tree
+      - Working in simulator
    - Follow Person 
-     - Introduction 
-     - Objetive 
-     - What we have done? 
+      - Introduction 
+      - Objetive 
+      - What have we done? 
+         - Behavior Tree
+      - Working in simulator
    - Follow with priority 
-     - Introduction 
-     - Objetive 
-     - What we have done? 
+      - Introduction 
+      - Objetive 
+      - What have we done? 
+         - Behavior Tree
+      - Working in simulator
    - Implementations 
    
 ## 0. Global Objetives: 
@@ -52,7 +59,7 @@ The main objetive of this project is to make a robot capable of following a ball
 ### 2.1. Objetive
    Our main objective was to create a condition program called ifperson, which in order to detect a person, it would filter its bounding box and return the speed corresponding to the distance and rotation of it. To do so, severals means have been used.
    
-### 2.2. What we have done?
+### 2.2. What have we done?
    In a similiar manner to that used in the follow ball program, ifperson binds two images, one with the bounding boxes, and the other one, capable of getting the depth of the object, therefore, its distance to the camera. Checking if the bounding box detected is that of a person and getting its middle pixel, we can finds the distance of that pixel and its position. With that information and adjusting it with the PID we get the linear and angular speed needed to approach the person.
 
 #### 2.2.1. Behavior Tree
@@ -71,12 +78,13 @@ The main objetive of this project is to make a robot capable of following a ball
 ### 3.1. Objetive
    Our main objective was to create a node capable of working with both ifball and ifperson programs, with the implementation of another Behavior Tree, in order to be able to follow a ball or a person at the same time. 
 
-### 3.2. What we have done?
+### 3.2. What have we done?
+   We have created a new behavior tree that uses the same nodes as the previous ones, thanks to how we did ifball and ifperson the implementation of both programs is simple. It is just needed a program for the ros node that register the behavior tree and the nodes and ticks the root.
    
 #### 3.2.1. Behavior Tree
    The behavior tree used for this implementatios is the following one:
 
-   ![Follow Both BT](https://i.postimg.cc/T3jfWctK/bt-if-both.png "Follow both BT")  
+   ![Follow Both BT](https://i.postimg.cc/vmgRtLz7/followboth-bt.png "Follow both BT")  
 
 ## 4. Implementations
    Finally we have created a visual-behavior.yaml configuration file, to be able to change basic parameters such as kobuki speed, turning distance, etc.
