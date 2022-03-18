@@ -70,6 +70,10 @@ class ifball : public BT::ActionNodeBase
     visual_behavior::PIDController angular_pid_;
     const double ideal_depth_ = 1.0;
     const double ideal_x_ = 320;
+    int turning_vel;
+    int dist_p;
+    int max_vel_ang;
+    int max_vel_lin;
 };
 }  // namespace visual_behavior
 

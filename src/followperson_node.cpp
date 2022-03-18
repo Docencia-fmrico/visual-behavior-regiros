@@ -31,33 +31,25 @@ int main(int argc, char **argv)
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
 
-  std::cerr << "Nodo iniciado" << std::endl;
   factory.registerFromPlugin(loader.getOSName("asr_ifperson_bt_node"));
   factory.registerFromPlugin(loader.getOSName("asr_move_bt_node"));
 
   auto blackboard = BT::Blackboard::create();
 
-  std::cerr << "Blackboard creada" << std::endl;
   std::string pkgpath = ros::package::getPath("visual_behavior");
   std::string xml_file = pkgpath + "/behavior_trees/followperson_bt.xml";
-
-  std::cerr << "[" << xml_file << "]" << std::endl;
 
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
   auto publisher_zmq = std::make_shared<BT::PublisherZMQ>(tree, 10, 1666, 1667);
 
-  std::cerr << "ZMQ" << std::endl;
   ros::Rate loop_rate(10);
 
   bool finish = false;
   while (ros::ok() && !finish)
   {
-    std::cerr << "Entra al while" << std::endl;
     finish = tree.rootNode()->executeTick() == BT::NodeStatus::SUCCESS;
 
-    std::cerr << "Antes de la vuelta" << std::endl;
     ros::spinOnce();
-    std::cerr << "Despues de la vuelta" << std::endl;
     loop_rate.sleep();
   }
 

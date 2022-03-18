@@ -1,0 +1,4 @@
+turning_vel: 0.4
+dist_p: 4.0
+max_vel_lin: 1.0
+max_vel_ang: 0.5
