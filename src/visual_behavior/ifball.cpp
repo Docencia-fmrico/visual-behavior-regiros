@@ -27,11 +27,15 @@ namespace visual_behavior
   : BT::ActionNodeBase(name, config),
     linear_pid_(0.0, 1.0, 0.0, 1.0),
     angular_pid_(0.0, 1.0, 0.0, 1.0),
-    nh_(),
+    nh_("~"),
     depth_sub_(nh_, "/camera/depth/image_raw", 1),
     hsvf_sub_(nh_, "/hsv/image_filtered", 1),
     sync_fdp_(MySyncPolicy_fdp(10), depth_sub_, hsvf_sub_)
   {
+    nh_.getParam("turning_vel", turning_vel);
+    nh_.getParam("dist_p", dist_p);
+    nh_.getParam("max_vel_ang", max_vel_ang);
+    nh_.getParam("max_vel_lin", max_vel_lin);
     sync_fdp_.registerCallback(boost::bind(&ifball::callback_fdp, this, _1, _2));
   }
 
@@ -74,10 +78,8 @@ namespace visual_behavior
     if(detected)
     {
       ball.depth = img_ptr_depth->image.at<float>(cv::Point(ball.x, ball.y)) * 1.0f;
-      if(ball.depth>4.0){detected=false;}
-      std::cerr << "ball at " << ball.depth << " in pixel " << ball.x << std::endl;
+      if(ball.depth>dist_p){detected=false;}
     }
-    
   }
 
 
@@ -88,11 +90,11 @@ namespace visual_behavior
 
     if (detected)
     {
-      double errlin = (ball.depth - ideal_depth_)/3.0 ;
+      double errlin = (ball.depth - ideal_depth_)/(dist_p-1) ;
       double errang = (ideal_x_ - ball.x)/320;
 
-      speed.linear = (linear_pid_.get_output(errlin))*1.0;
-      speed.angular = (angular_pid_.get_output(errang))*0.5;
+      speed.linear = (linear_pid_.get_output(errlin))*max_vel_lin;
+      speed.angular = (angular_pid_.get_output(errang))*max_vel_ang;
 
       ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
       BT::TreeNode::setOutput("speed", speed);
@@ -101,7 +103,7 @@ namespace visual_behavior
     else
     {
     speed.linear = 0.0;
-    speed.angular = 0.4;
+    speed.angular = turning_vel;
     BT::TreeNode::setOutput("speed", speed);
     return BT::NodeStatus::FAILURE;
     }

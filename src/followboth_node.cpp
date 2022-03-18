@@ -38,8 +38,6 @@ int main(int argc, char **argv)
   std::string pkgpath = ros::package::getPath("visual_behavior");
   std::string xml_file = pkgpath + "/behavior_trees/followboth_bt.xml";
 
-  std::cerr << "[" << xml_file << "]" << std::endl;
-
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
   auto publisher_zmq = std::make_shared<BT::PublisherZMQ>(tree, 10, 1666, 1667);
 
