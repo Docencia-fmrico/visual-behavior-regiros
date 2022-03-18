@@ -84,7 +84,10 @@ The main objetive of this project is to make a robot capable of following a ball
 #### 3.2.1. Behavior Tree
    The behavior tree used for this implementatios is the following one:
 
-   ![Follow Both BT](https://i.postimg.cc/vmgRtLz7/followboth-bt.png "Follow both BT")  
+   ![Follow Both BT](https://i.postimg.cc/vmgRtLz7/followboth-bt.png "Follow both BT")
+   
+### 3.3. Working in simulator
+   [Operation](https://urjc-my.sharepoint.com/:v:/g/personal/da_quinga_2020_alumnos_urjc_es/ETjmVZh4gMpKjt-Cqy7RXS4B224AEJzS1rOufhIQg5uI5g?e=FfZimJ)
 
 ## 4. Implementations
    Finally we have created a visual-behavior.yaml configuration file, to be able to change basic parameters such as kobuki speed, turning distance, etc.
