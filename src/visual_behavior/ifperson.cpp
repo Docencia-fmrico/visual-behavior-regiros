@@ -28,11 +28,15 @@ namespace visual_behavior
   : BT::ActionNodeBase(name, config),
     linear_pid_(0.0, 1.0, 0.0, 1.0),
     angular_pid_(0.0, 1.0, 0.0, 1.0),
-    nh_(),
+    nh_("~"),
     depth_sub_(nh_, "/camera/depth/image_raw", 1),
     bbx_sub_(nh_, "/darknet_ros/bounding_boxes", 1),
     sync_bbx_(MySyncPolicy_bbx(10), depth_sub_, bbx_sub_)
   {
+    nh_.getParam("turning_vel", turning_vel);
+    nh_.getParam("dist_p", dist_p);
+    nh_.getParam("max_vel_ang", max_vel_ang);
+    nh_.getParam("max_vel_lin", max_vel_lin);
     sync_bbx_.registerCallback(boost::bind(&ifperson::callback_bbx, this, _1, _2));
   }
 
@@ -65,20 +69,14 @@ namespace visual_behavior
 
       if (detected)
       {
-        std::cerr << "person  "  << std::endl;
         person.depth = img_ptr_depth->image.at<float>(cv::Point(person.x, person.y)) * 1.0f;
         break;
       }
     }
-    if(person.depth > 4.0 || std::isnan(person.depth) || std::isinf(person.depth))
+    if(person.depth > dist_p || std::isnan(person.depth) || std::isinf(person.depth))
     {
       detected=false;
     }
-    if(detected)
-    {
-      std::cerr << "person at " << person.depth << " in pixel " << person.x << std::endl;
-    }
-    
   }
 
   BT::NodeStatus
@@ -88,23 +86,22 @@ namespace visual_behavior
 
     if (detected)
     {
-      double errlin = (person.depth - ideal_depth_)/3.0 ;
+      double errlin = (person.depth - ideal_depth_)/(dist_p-1) ;
       double errang = (ideal_x_ - person.x)/320;
 
-      speed.linear = (linear_pid_.get_output(errlin))*1.0;
-      speed.angular = (angular_pid_.get_output(errang))*0.5;
+      speed.linear = (linear_pid_.get_output(errlin))*max_vel_lin;
+      speed.angular = (angular_pid_.get_output(errang))*max_vel_ang;
 
       ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
       BT::TreeNode::setOutput("speed", speed);
-     return BT::NodeStatus::SUCCESS;
+      return BT::NodeStatus::SUCCESS;
     }
     else
     {
     speed.linear = 0;
-    speed.angular = 0.4;
+    speed.angular = turning_vel;
     ROS_INFO("linear speed %f, angular %f", speed.linear, speed.angular);
     BT::TreeNode::setOutput("speed", speed);
-    ROS_INFO("aaaaa");
     return BT::NodeStatus::FAILURE;
     }
   }
